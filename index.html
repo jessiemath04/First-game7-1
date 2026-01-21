@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jessie Math - 三角形幾何王國</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- ✅ 快取連結預覽（請放在 <head> 裡） -->
+  <meta name="description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  <!-- ✅ LINE / FB 預覽用 -->
+  <meta property="og:title" content="Jessie Math - 三角形幾何王國">
+  <meta property="og:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  <meta property="og:type" content="website">
+
+  <!-- ✅ 預覽圖片-->
+  <meta property="og:image" content="g4-u7-1.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1536">
+  <meta property="og:image:alt" content="Jessie Math 遊戲封面">
+
+  <!-- ✅ 有些平台會參考 -->
+  <link rel="image_src" href="g4-u7-1.png">
+
+  <!-- ✅ Twitter / X（可用同一張圖） -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jessie Math - 三角形幾何王國">
+  <meta name="twitter:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  <meta name="twitter:image" content="g4-u7-1.png">
+
+  <!-- ✅ KaTeX：讓 \(\overline{BC}\) 這種寫法能直接顯示 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root{
+      --primary-yellow:#FFD700;
+      --bg-color:#f0f8ff;
+      --accent-blue:#007bff;
+      --ok:#28a745;
+      --bad:#e53935;
+      --ink:#1f2937;
+      --soft:#f8f9fa;
+      --card:#ffffff;
+      --shadow:0 10px 30px rgba(0,0,0,.10);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      font-family: "Microsoft JhengHei", system-ui, -apple-system, Segoe UI, sans-serif;
+      margin:0;
+      background:var(--bg-color);
+      color:var(--ink);
+      overflow-x:hidden;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:15px 30px;
+      background:#fff;
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    .brand-container{display:flex;align-items:center;gap:15px;}
+    .logo-circle{
+      width:80px;height:80px;
+      border:4px solid var(--primary-yellow);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:transparent;
+      flex:0 0 auto;
+    }
+    .logo-circle img{width:90%;height:90%;object-fit:contain;}
+    .brand-title{font-size:24px;font-weight:900;letter-spacing:.5px}
+
+    .nav-buttons{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+    .nav-btn{
+      padding:10px 14px;
+      border-radius:25px;
+      text-decoration:none;
+      color:#333;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#eee;
+      transition:.2s;
+      user-select:none;
+    }
+    .nav-btn:hover{background:var(--primary-yellow);transform:translateY(-1px)}
+    .btn-back{background:#ffecb3}
+
+    .page{
+      display:none;
+      max-width:980px;
+      margin:26px auto 40px;
+      padding:26px;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .active-page{display:block;}
+
+    h1,h2,h3{margin:10px 0}
+    .sub{
+      opacity:.8;
+      margin-top:6px;
+      font-weight:700;
+    }
+
+    .input-group{margin:22px 0 10px;}
+    input[type="text"]{
+      padding:12px;
+      width:min(320px, 90%);
+      border-radius:12px;
+      border:2px solid #ddd;
+      font-size:1.05em;
+      outline:none;
+    }
+    input[type="text"]:focus{border-color:var(--primary-yellow); box-shadow:0 0 0 4px rgba(255,215,0,.25);}
+
+    .game-desc{
+      background:#fff9e6;
+      padding:18px 18px;
+      border-radius:16px;
+      text-align:left;
+      margin:14px auto 18px;
+      max-width:860px;
+      line-height:1.55;
+    }
+    .game-desc ul{margin:10px 0 0 20px}
+    .pill-row{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin:10px 0 0;
+    }
+    .pill{
+      background:#eef6ff;
+      border:1px solid rgba(0,123,255,.15);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:900;
+      color:#0b5ed7;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .start-btn{
+      background:var(--ok);
+      color:white;
+      padding:14px 40px;
+      font-size:1.15em;
+      border:none;
+      border-radius:30px;
+      cursor:pointer;
+      margin-top:14px;
+      font-weight:900;
+      transition:.2s;
+    }
+    .start-btn:hover{filter:brightness(1.05); transform:translateY(-1px)}
+
+    .difficulty-select{
+      margin:16px auto 6px;
+      padding:14px;
+      background:#e3f2fd;
+      border-radius:14px;
+      max-width:860px;
+      text-align:left;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    select{
+      padding:8px 10px;
+      border-radius:10px;
+      border:2px solid rgba(0,0,0,.08);
+      font-weight:800;
+      outline:none;
+    }
+
+    .level-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+    .level-card{
+      padding:22px 16px;
+      background:var(--soft);
+      border-radius:16px;
+      cursor:pointer;
+      border:3px solid transparent;
+      transition:.2s;
+      text-align:left;
+      min-height:150px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .level-card:hover{border-color:var(--primary-yellow); transform:translateY(-4px)}
+    .level-card h3{margin:8px 0 4px}
+    .level-card p{margin:0; opacity:.85; font-weight:700}
+
+    .stats-bar{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 auto 14px;
+      font-weight:900;
+      color:var(--accent-blue);
+      flex-wrap:wrap;
+      max-width:920px;
+    }
+    .stat{
+      background:#eef6ff;
+      border:1px solid rgba(0,123,255,.12);
+      padding:10px 12px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .game-wrap{
+      max-width:920px;
+      margin:0 auto;
+      text-align:left;
+      background:#fff;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,.06);
+      padding:18px;
+      position:relative;
+    }
+
+    .q-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .q-badge{
+      background:#fff9e6;
+      border:1px solid rgba(255,183,0,.25);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:900;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .q-title{
+      font-size:1.15em;
+      font-weight:900;
+      margin:8px 0 14px;
+      line-height:1.55;
+    }
+
+    .choices{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .choice-btn{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:2px solid rgba(0,0,0,.10);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+      text-align:left;
+      transition:.15s;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      line-height:1.35;
+    }
+    .choice-btn:hover{border-color:rgba(255,215,0,.9); box-shadow:0 0 0 4px rgba(255,215,0,.20)}
+    .choice-key{
+      width:28px;height:28px;border-radius:10px;
+      background:#f3f4f6;
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 auto;
+      font-weight:900;
+    }
+
+    .feedback{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:900;
+      display:none;
+      line-height:1.55;
+    }
+    .feedback.ok{display:block;background:rgba(40,167,69,.10); border:1px solid rgba(40,167,69,.25); color:#157347}
+    .feedback.bad{display:block;background:rgba(229,57,53,.10); border:1px solid rgba(229,57,53,.25); color:#b71c1c}
+
+    .controls-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+      background:#eee;
+      transition:.15s;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--primary-yellow)}
+    .btn-ghost{background:#f3f4f6}
+    .btn-danger{background:#ffd6d6}
+    .btn-ok{background:#d1fae5}
+    .btn-pause{background:#e0e7ff}
+
+    .divider{margin:26px 0;border:none;border-top:1px solid rgba(0,0,0,.08)}
+
+    table{width:100%; border-collapse:collapse; overflow:hidden; border-radius:14px;}
+    th,td{padding:10px; border-bottom:1px solid rgba(0,0,0,.06); text-align:left; font-weight:900;}
+    thead th{background:#eee}
+    tbody tr:hover{background:#fafafa}
+
+    footer{
+      max-width:980px;
+      margin:0 auto 26px;
+      padding:0 14px;
+    }
+    .footer-pill{
+      /* ✅ 依你的要求：背景改白色（原本黑色） */
+      background:#ffffff;
+      color:var(--ink);
+      border-radius:999px;
+      padding:12px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      box-shadow:0 14px 30px rgba(15,23,42,.12);
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .footer-left{display:flex;align-items:center;gap:10px}
+    .footer-dot{width:10px;height:10px;border-radius:50%;background:var(--primary-yellow)}
+    .footer-copy{font-weight:900;opacity:.95}
+    .footer-right{display:flex;align-items:center;gap:10px;opacity:.95;font-weight:900}
+    .footer-icon{width:28px;height:28px;border-radius:10px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center}
+
+    .q-figure{
+      margin:10px 0 14px;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .q-figure img{
+      max-width:100%;
+      height:auto;
+      border-radius:12px;
+    }
+
+    .pause-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.70);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+      padding:18px;
+    }
+    .pause-card{
+      width:min(560px, 94vw);
+      background:#fff;
+      border-radius:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+      padding:18px 18px 16px;
+      text-align:center;
+    }
+    .pause-title{
+      font-size:1.25em;
+      font-weight:900;
+      margin:6px 0 6px;
+      color:#0f172a;
+    }
+    .pause-sub{
+      font-weight:800;
+      opacity:.85;
+      line-height:1.6;
+      margin:0 0 12px;
+    }
+    .pause-row{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    /* ✅ RWD：補強手機/平板/電腦比例（不動功能，只加排版保險） */
+    @media (max-width: 1024px){
+      .page{max-width:920px}
+      .level-grid{grid-template-columns:repeat(2, 1fr);}
+      .choices{grid-template-columns:1fr;}
+      .game-wrap{padding:16px}
+      table{display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+    }
+
+    @media (max-width: 860px){
+      header{padding:12px 14px}
+      .logo-circle{width:68px;height:68px}
+      .brand-title{font-size:22px}
+      .page{margin:18px 10px; padding:18px}
+      .level-grid{grid-template-columns:1fr; }
+      .choices{grid-template-columns:1fr;}
+      .difficulty-select{justify-content:flex-start}
+      .nav-buttons{justify-content:flex-start}
+      .footer-pill{border-radius:22px}
+    }
+
+    @media (max-width: 420px){
+      .brand-title{font-size:20px}
+      .nav-btn{padding:9px 12px}
+      .q-title{font-size:1.05em}
+      .choice-key{width:26px;height:26px;border-radius:9px}
+      .btn{width:100%; justify-content:center}
+      .controls-row{gap:8px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="brand-container">
+    <div class="logo-circle">
+      <img src="JESSIEMATH-Q.png" alt="Jessie Math Logo">
+    </div>
+    <span class="brand-title">Jessie Math</span>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="https://jessiemath0703-chu.github.io/website2/" class="nav-btn">
+      <i class="fas fa-home"></i>首頁
+    </a>
+    <a href="https://jessiemath0703-chu.github.io/Game-Lobby/" class="nav-btn">
+      <i class="fas fa-gamepad"></i>遊戲大廳
+    </a>
+    <a href="https://jessiemath0703-chu.github.io/Game-Lobby/#g4-u7" class="nav-btn btn-back">
+      <i class="fas fa-arrow-left"></i>四年級三角形與全等
+    </a>
+  </div>
+</header>
+
+<section id="welcome-page" class="page active-page">
+  <h1>📐 三角形大冒險</h1>
+  <div class="sub">把角度與邊長，收進你的王冠裡。今天你就是幾何主角 ✨</div>
+
+  <div class="pill-row">
+    <div class="pill"><i class="fa-solid fa-stopwatch"></i>計時衝刺</div>
+    <div class="pill"><i class="fa-solid fa-bolt"></i>答錯扣秒</div>
+    <div class="pill"><i class="fa-solid fa-trophy"></i>排行榜</div>
+  </div>
+
+  <div class="game-desc">
+    <h3 style="margin:0 0 8px;">📜 遊戲說明</h3>
+    <ul>
+      <li><b>第一關｜分類大考驗：</b>辨認銳角、直角、鈍角與等腰/正三角形等概念。</li>
+      <li><b>第二關｜畫圖小高手：</b>根據「畫法描述」判斷能畫出哪種三角形。</li>
+      <li><b>第三關｜全等偵探：</b>找對應點、對應角、對應邊（可旋轉/翻轉/上下顛倒）。</li>
+      <li><b>出題：</b>題目會一直隨機變化（不固定順序、不固定題型）。</li>
+      <li><b>計分：</b>答對加分，越快加越多；答錯會扣分並扣秒。</li>
+    </ul>
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="player-name" placeholder="請輸入勇者姓名..." maxlength="16" />
+  </div>
+
+  <button class="start-btn" onclick="goToLobby()">
+    進入挑戰 <i class="fa-solid fa-arrow-right"></i>
+  </button>
+</section>
+
+<section id="lobby-page" class="page">
+  <h2>勇者 <span id="display-name"></span>，請選擇關卡</h2>
+  <div class="sub">選一扇門，走進三角形的光。</div>
+
+  <div class="difficulty-select">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="fa-solid fa-gauge-high" style="color:#0b5ed7;"></i>
+      <b>難易度（速度）</b>
+      <span style="opacity:.75;font-weight:800;">影響：總時間、加成倍率</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <label for="speed-select" style="font-weight:900;">模式：</label>
+      <select id="speed-select">
+        <option value="slow">慢速（練習模式）</option>
+        <option value="normal" selected>正常（冒險模式）</option>
+        <option value="fast">疾速（傳說模式）</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="level-grid">
+    <div class="level-card" onclick="startLevel(1)">
+      <div>
+        <i class="fas fa-layer-group fa-3x" style="color:#e91e63;"></i>
+        <h3>第一關</h3>
+        <p>三角形的分類</p>
+      </div>
+      <div style="opacity:.85;font-weight:900;">角度與邊長：誰在發光？</div>
+    </div>
+
+    <div class="level-card" onclick="startLevel(2)">
+      <div>
+        <i class="fas fa-pencil-alt fa-3x" style="color:#4caf50;"></i>
+        <h3>第二關</h3>
+        <p>畫三角形</p>
+      </div>
+      <div style="opacity:.85;font-weight:900;">看「畫法」猜圖形：你的腦內尺超準。</div>
+    </div>
+
+    <div class="level-card" onclick="startLevel(3)">
+      <div>
+        <i class="fas fa-clone fa-3x" style="color:#2196f3;"></i>
+        <h3>第三關</h3>
+        <p>認識全等</p>
+      </div>
+      <div style="opacity:.85;font-weight:900;">翻轉、旋轉都不怕：對應關係才是主角。</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h3 style="margin:0 0 10px;">🏆 即時排行榜（本機）</h3>
+  <div class="sub" style="margin:0 0 12px;">每個玩家會記錄三個關卡的「最高分」。</div>
+
+  <div style="max-width:920px;margin:0 auto;">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:80px;">名次</th>
+          <th>玩家</th>
+          <th style="width:120px;">第一關</th>
+          <th style="width:120px;">第二關</th>
+          <th style="width:120px;">第三關</th>
+          <th style="width:140px;">總和</th>
+          <th style="width:140px;">日期</th>
+        </tr>
+      </thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="game-page" class="page">
+  <div class="stats-bar">
+    <div class="stat"><span>🕒</span>時間：<span id="timer">0</span>s</div>
+    <div class="stat"><span>✨</span>得分：<span id="score">0</span></div>
+    <div class="stat"><span>🧩</span>關卡：<span id="current-level-name"></span></div>
+    <div class="stat"><span>🎯</span><span id="q-progress">第 1 題</span></div>
+  </div>
+
+  <div class="game-wrap">
+    <div class="q-meta">
+      <div class="q-badge"><i class="fa-solid fa-feather-pointed"></i><span id="mode-badge">模式：正常</span></div>
+      <div class="q-badge"><i class="fa-solid fa-heart-pulse"></i><span id="streak-badge">連對：0</span></div>
+    </div>
+
+    <div id="game-content"></div>
+
+    <div id="feedback" class="feedback"></div>
+
+    <div class="controls-row">
+      <button class="btn btn-ghost" onclick="backToLobby()"><i class="fa-solid fa-arrow-left"></i>返回關卡選擇</button>
+      <button class="btn btn-pause" onclick="togglePause(true)"><i class="fa-solid fa-pause"></i>暫停</button>
+      <button class="btn btn-danger" onclick="restartConfirm()"><i class="fa-solid fa-rotate-left"></i>重來</button>
+
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none;">
+        下一題 <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div id="pause-overlay" class="pause-overlay" aria-hidden="true">
+  <div class="pause-card" role="dialog" aria-modal="true" aria-label="暫停中">
+    <div class="pause-title">⏸ 已暫停</div>
+    <div class="pause-sub">題目先蓋起來，公平像 \(\overline{BC}\) 一樣直挺挺。<br>回來就繼續，別讓靈感跑掉。</div>
+    <div class="pause-row">
+      <button class="btn btn-ok" onclick="togglePause(false)"><i class="fa-solid fa-play"></i>繼續</button>
+      <button class="btn btn-danger" onclick="restartConfirm()"><i class="fa-solid fa-rotate-left"></i>重來</button>
+      <button class="btn btn-ghost" onclick="backToLobby()"><i class="fa-solid fa-door-open"></i>回大廳</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-pill">
+    <div class="footer-left">
+      <div class="footer-dot" aria-hidden="true"></div>
+      <div class="footer-copy">© 2025–2026 Jessie Math 捷析老師. All rights reserved.</div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-icon" aria-hidden="true"><i class="fas fa-compass"></i></div>
+      <div class="footer-tagline">數學不迷路，Jessie 帶你走向理解。</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================
+   ✅ 唯一更改：第一關「鈍角題」橘色圓弧改為「真正貼在角上」的圓弧
+   - 用兩條邊的方向向量算出圓弧起點/終點
+   - 圓弧會「包好」那個角，不會飄到邊上
+   其他全部不動
+========================= */
+
+const $ = (sel) => document.querySelector(sel);
+
+const state = {
+  playerName: "",
+  speed: "normal",
+  level: 1,
+  score: 0,
+  timer: 0,
+  tick: null,
+  streak: 0,
+  answered: false,
+  paused: false,
+  autoNext: null,
+  qNo: 1,
+  recentSig: [],
+  currentQ: null
+};
+
+const SPEED = {
+  slow:   { label:"慢速",   time: 90, mult: 0.95, wrongPenalty: 3, wrongScore: 40 },
+  normal: { label:"正常",   time: 60, mult: 1.00, wrongPenalty: 4, wrongScore: 50 },
+  fast:   { label:"疾速",   time: 45, mult: 1.15, wrongPenalty: 5, wrongScore: 60 },
+};
+
+const LEVEL_NAME = {
+  1: "三角形的分類",
+  2: "畫三角形",
+  3: "認識全等",
+};
+
+function renderMath(){
+  try{
+    if(window.renderMathInElement){
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "\\(", right: "\\)", display: false},
+          {left: "\\[", right: "\\)", display: true}
+        ]
+      });
+    }
+  }catch(e){}
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function clamp(n,min,max){return Math.max(min, Math.min(max,n));}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function seg(s){ return `\\(\\overline{${s}}\\)`; }
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function ensureUniqueChoices(question){
+  const orig = question.choices.map(String);
+  const seen = new Set();
+  const uniq = [];
+  for(const c of orig){
+    if(!seen.has(c)){
+      seen.add(c);
+      uniq.push(c);
+    }
+  }
+  const correctText = String(orig[question.a]);
+  if(!uniq.includes(correctText)){
+    uniq.unshift(correctText);
+  }
+  let newA = uniq.indexOf(correctText);
+
+  const fillerPool = [
+    "點 A","點 B","點 C","點 D",
+    "∠A","∠B","∠C","∠D",
+    seg("AB"),seg("AC"),seg("BC"),seg("DE"),seg("EF"),seg("DF")
+  ].map(String);
+
+  let i = 0;
+  while(uniq.length < 3 && i < fillerPool.length){
+    const cand = fillerPool[i++];
+    if(!uniq.includes(cand) && cand !== correctText){
+      uniq.push(cand);
+    }
+  }
+
+  let final = uniq.length >= 4 ? uniq.slice(0,4) : uniq.slice(0,3);
+  final = shuffle(final);
+  newA = final.indexOf(correctText);
+  if(newA < 0){
+    final[0] = correctText;
+    newA = 0;
+    final = shuffle(final);
+    newA = final.indexOf(correctText);
+  }
+  return { ...question, choices: final, a: newA };
+}
+
+function switchPage(id){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active-page"));
+  document.getElementById(id).classList.add("active-page");
+  setTimeout(renderMath, 0);
+}
+
+function goToLobby(){
+  const name = $("#player-name").value.trim();
+  if(!name){
+    alert("請先輸入名字哦！");
+    return;
+  }
+  state.playerName = name;
+  $("#display-name").innerText = name;
+  renderLeaderboard();
+  switchPage("lobby-page");
+}
+
+/* ======== 排行榜 ======== */
+const LB_KEY = "jm_g4u7_leaderboard_levels_v1";
+function loadLB(){
+  try{
+    const raw = localStorage.getItem(LB_KEY);
+    const data = raw ? JSON.parse(raw) : [];
+    return Array.isArray(data) ? data : [];
+  }catch(e){ return []; }
+}
+function saveLB(list){ localStorage.setItem(LB_KEY, JSON.stringify(list)); }
+function upsertLevelScore(name, level, score){
+  const now = new Date();
+  const stamp = now.toLocaleDateString("zh-Hant", { year:"numeric", month:"2-digit", day:"2-digit" });
+  let lb = loadLB();
+  let row = lb.find(x => x.name === name);
+  if(!row){
+    row = { name, l1:0, l2:0, l3:0, date: stamp };
+    lb.push(row);
+  }
+  const key = level===1 ? "l1" : level===2 ? "l2" : "l3";
+  if(score > (row[key] || 0)){
+    row[key] = score;
+    row.date = stamp;
+  }
+  lb.sort((a,b)=> ((b.l1+b.l2+b.l3) - (a.l1+a.l2+a.l3)));
+  lb = lb.slice(0,5);
+  saveLB(lb);
+}
+function renderLeaderboard(){
+  const lb = loadLB();
+  const body = $("#lb-body");
+  body.innerHTML = "";
+  if(lb.length === 0){
+    body.innerHTML = `<tr><td colspan="7" style="opacity:.75;font-weight:900;">目前還沒有紀錄，快去拿第一名吧 ✨</td></tr>`;
+    return;
+  }
+  lb.forEach((row, i) => {
+    const medal = i===0 ? "🥇" : i===1 ? "🥈" : i===2 ? "🥉" : "⭐";
+    const total = (row.l1||0) + (row.l2||0) + (row.l3||0);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${medal} ${i+1}</td>
+      <td>${escapeHtml(row.name)}</td>
+      <td>${row.l1||0}</td>
+      <td>${row.l2||0}</td>
+      <td>${row.l3||0}</td>
+      <td>${total}</td>
+      <td>${row.date || ""}</td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+/* ======== SVG 工具 ======== */
+function svgToDataUri(svg){
+  const cleaned = svg
+    .replace(/\n+/g, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/"/g, "'");
+  return "data:image/svg+xml;utf8," + encodeURIComponent(cleaned);
+}
+
+function makeTriLabels(){
+  const sets = [
+    ["A","B","C"],
+    ["P","Q","R"],
+    ["D","E","F"],
+    ["M","N","K"],
+  ];
+  return choice(sets);
+}
+
+/* =========================
+   第一關：圖形標示（等腰/正三角形/直角不變）
+========================= */
+
+function makeRightTri(){
+  const [A,B,C] = makeTriLabels();
+  const x1 = randInt(120,160), y1 = 280;
+  const x2 = x1, y2 = randInt(80,120);
+  const x3 = randInt(430,500), y3 = 280;
+  const s = 36;
+
+  return svgToDataUri(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <g stroke="#111827" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M${x1} ${y1} L${x2} ${y2} L${x3} ${y3} Z"/>
+      </g>
+      <g stroke="#007bff" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+        <path d="M${x1} ${y1} L${x2} ${y2}" stroke-width="12"/>
+        <path d="M${x1} ${y1} L${x3} ${y3}" stroke-width="12"/>
+      </g>
+      <g stroke="#007bff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M${x1} ${y1-s} L${x1+s} ${y1-s} L${x1+s} ${y1}"/>
+      </g>
+      <g fill="#111827" font-family="Microsoft JhengHei" font-weight="900" font-size="28">
+        <text x="${x1-25}" y="${y1+25}">${A}</text>
+        <text x="${x2-25}" y="${y2-10}">${B}</text>
+        <text x="${x3+10}" y="${y3+25}">${C}</text>
+      </g>
+    </svg>
+  `);
+}
+
+function makeIsosTri(){
+  const [A,B,C] = makeTriLabels();
+  const left = randInt(140,180), right = randInt(460,500);
+  const topX = randInt(300,340), topY = randInt(80,110);
+  const baseY = 280;
+
+  return svgToDataUri(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <g stroke="#111827" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M${left} ${baseY} L${topX} ${topY} L${right} ${baseY} Z"/>
+      </g>
+      <g stroke="#e91e63" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+        <path d="M${left} ${baseY} L${topX} ${topY}" stroke-width="12"/>
+        <path d="M${topX} ${topY} L${right} ${baseY}" stroke-width="12"/>
+      </g>
+      <g fill="#111827" font-family="Microsoft JhengHei" font-weight="900" font-size="28">
+        <text x="${left-25}" y="${baseY+25}">${A}</text>
+        <text x="${topX-10}" y="${topY-10}">${B}</text>
+        <text x="${right+10}" y="${baseY+25}">${C}</text>
+      </g>
+    </svg>
+  `);
+}
+
+function makeEquiTri(){
+  const [A,B,C] = makeTriLabels();
+  const left = randInt(150,190), right = randInt(450,490);
+  const topX = Math.round((left+right)/2), topY = randInt(90,120);
+  const baseY = 280;
+
+  return svgToDataUri(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <g stroke="#111827" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M${left} ${baseY} L${topX} ${topY} L${right} ${baseY} Z"/>
+      </g>
+      <g stroke="#ffb700" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+        <path d="M${left} ${baseY} L${topX} ${topY}" stroke-width="12"/>
+        <path d="M${topX} ${topY} L${right} ${baseY}" stroke-width="12"/>
+        <path d="M${left} ${baseY} L${right} ${baseY}" stroke-width="12"/>
+      </g>
+      <g fill="#111827" font-family="Microsoft JhengHei" font-weight="900" font-size="28">
+        <text x="${left-25}" y="${baseY+25}">${A}</text>
+        <text x="${topX-10}" y="${topY-10}">${B}</text>
+        <text x="${right+10}" y="${baseY+25}">${C}</text>
+      </g>
+    </svg>
+  `);
+}
+
+/* ✅ 唯一修改點：makeObtuseTri 的橘色圓弧，改成真正「包住角」 */
+function makeObtuseTri(){
+  const [A,B,C] = makeTriLabels();
+  const ax = randInt(110,150), ay = 270;
+  const bx = randInt(380,430), by = randInt(110,140);
+  const cx = randInt(520,560), cy = 280;
+
+  // —— 圓弧計算：以 B 為頂點，沿 BA 與 BC 兩條射線取點
+  const r = 70; // 圓弧半徑（可視覺更清楚）
+  const v1x = ax - bx, v1y = ay - by; // BA
+  const v2x = cx - bx, v2y = cy - by; // BC
+  const l1 = Math.hypot(v1x, v1y) || 1;
+  const l2 = Math.hypot(v2x, v2y) || 1;
+  const u1x = v1x / l1, u1y = v1y / l1;
+  const u2x = v2x / l2, u2y = v2y / l2;
+
+  const p1x = bx + u1x * r, p1y = by + u1y * r;
+  const p2x = bx + u2x * r, p2y = by + u2y * r;
+
+  // 決定 sweep：依向量外積方向，讓圓弧落在兩邊之間
+  const cross = u1x * u2y - u1y * u2x;
+  const sweep = cross >= 0 ? 1 : 0;
+
+  const arcPath = `M${p1x.toFixed(1)} ${p1y.toFixed(1)} A${r} ${r} 0 0 ${sweep} ${p2x.toFixed(1)} ${p2y.toFixed(1)}`;
+
+  return svgToDataUri(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <g stroke="#111827" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M${ax} ${ay} L${bx} ${by} L${cx} ${cy} Z"/>
+      </g>
+
+      <!-- ✅ 鈍角圓弧：真正貼在頂點 B 的兩邊之間，乾淨包住那個角 -->
+      <g stroke="#ff5722" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+        <path d="${arcPath}"/>
+      </g>
+
+      <g fill="#111827" font-family="Microsoft JhengHei" font-weight="900" font-size="28">
+        <text x="${ax-25}" y="${ay+25}">${A}</text>
+        <text x="${bx-20}" y="${by-10}">${B}</text>
+        <text x="${cx+10}" y="${cy+25}">${C}</text>
+      </g>
+    </svg>
+  `);
+}
+
+/* ========= ✅ 第三關全等圖：不裁切 + 標示永遠貼在線上（原樣保留） ========= */
+function pt(x,y){ return {x,y}; }
+function add(a,b){ return {x:a.x+b.x, y:a.y+b.y}; }
+function sub(a,b){ return {x:a.x-b.x, y:a.y-b.y}; }
+function mul(a,k){ return {x:a.x*k, y:a.y*k}; }
+function len(v){ return Math.hypot(v.x, v.y); }
+function norm(v){
+  const l = len(v) || 1;
+  return {x:v.x/l, y:v.y/l};
+}
+function rotate(p, deg, cx, cy){
+  const rad = deg * Math.PI / 180;
+  const c = Math.cos(rad), s = Math.sin(rad);
+  const x = p.x - cx, y = p.y - cy;
+  return { x: cx + x*c - y*s, y: cy + x*s + y*c };
+}
+function reflectX(p, axisX){ return { x: axisX + (axisX - p.x), y: p.y }; }
+function reflectY(p, axisY){ return { x: p.x, y: axisY + (axisY - p.y) }; }
+function translatePts(pts, dx, dy){ return pts.map(p => ({x:p.x+dx, y:p.y+dy})); }
+function centroid(pts){
+  const s = pts.reduce((acc,p)=>({x:acc.x+p.x, y:acc.y+p.y}), {x:0,y:0});
+  return {x:s.x/pts.length, y:s.y/pts.length};
+}
+function clampToBox(p, pad, W, H){
+  return { x: clamp(p.x, pad, W-pad), y: clamp(p.y, pad, H-pad) };
+}
+function labelPos(pts, idx, W, H){
+  const c = centroid(pts);
+  const v = sub(pts[idx], c);
+  const d = norm(v);
+  const raw = add(pts[idx], mul(d, 20));
+  return clampToBox(raw, 12, W, H);
+}
+function angleArcPath(pts, vIdx, adj1Idx, adj2Idx, r){
+  const V = pts[vIdx];
+  const A = pts[adj1Idx];
+  const B = pts[adj2Idx];
+  const v1 = norm(sub(A, V));
+  const v2 = norm(sub(B, V));
+  const p1 = add(V, mul(v1, r));
+  const p2 = add(V, mul(v2, r));
+  const cross = v1.x*v2.y - v1.y*v2.x;
+  const sweep = cross >= 0 ? 1 : 0;
+  return `M${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A${r} ${r} 0 0 ${sweep} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+}
+
+function buildTriSvg(pts, labels, opts){
+  const W = opts.W, H = opts.H;
+  const strokeMain = "#111827";
+  const edgeColor = opts.edgeColor || "#007bff";
+  const angleColor = opts.angleColor || "#e91e63";
+  const edge = opts.markEdge || [0,1];
+  const vIdx = (opts.markVertex ?? 1);
+
+  const path = `M${pts[0].x} ${pts[0].y} L${pts[1].x} ${pts[1].y} L${pts[2].x} ${pts[2].y} Z`;
+
+  const pE1 = pts[edge[0]], pE2 = pts[edge[1]];
+  const edgeLine = `M${pE1.x} ${pE1.y} L${pE2.x} ${pE2.y}`;
+
+  const arc = angleArcPath(pts, vIdx, (vIdx+2)%3, (vIdx+1)%3, 30);
+
+  const t0 = labelPos(pts, 0, W, H);
+  const t1 = labelPos(pts, 1, W, H);
+  const t2 = labelPos(pts, 2, W, H);
+
+  return `
+    <g stroke="${strokeMain}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="${path}"/>
+    </g>
+
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="${edgeLine}" stroke="${edgeColor}" stroke-width="12" opacity="0.95"/>
+      <path d="${arc}" stroke="${angleColor}" stroke-width="10" opacity="0.95"/>
+    </g>
+
+    <g fill="#111827" font-family="Microsoft JhengHei" font-weight="900" font-size="28">
+      <text x="${t0.x.toFixed(1)}" y="${t0.y.toFixed(1)}">${labels[0]}</text>
+      <text x="${t1.x.toFixed(1)}" y="${t1.y.toFixed(1)}">${labels[1]}</text>
+      <text x="${t2.x.toFixed(1)}" y="${t2.y.toFixed(1)}">${labels[2]}</text>
+    </g>
+  `;
+}
+
+function makeCongPairVariant(){
+  const labelsLeft = choice([["A","B","C"],["P","Q","R"],["M","N","K"]]);
+  const labelsRight = choice([["D","E","F"],["U","V","W"],["X","Y","Z"]]);
+  const [A,B,C] = labelsLeft;
+  const [D,E,F] = labelsRight;
+
+  const map = { [A]:D, [B]:E, [C]:F };
+  const variant = choice(["mirrorLR","flipUD","rotate180","stackTopBottom","rotate90"]);
+
+  const W = 860, H = 360;
+
+  const baseL = [pt(140, 270), pt(260, 110), pt(380, 270)];
+  const cx = 260, cy = 190;
+
+  let ptsL = baseL.slice();
+  let ptsR = baseL.slice();
+
+  if(variant === "mirrorLR"){
+    ptsR = ptsR.map(p => reflectX(p, cx));
+    ptsR = translatePts(ptsR, 340, 0);
+  }
+
+  if(variant === "flipUD"){
+    ptsR = ptsR.map(p => reflectY(p, cy));
+    ptsR = translatePts(ptsR, 340, 0);
+  }
+
+  if(variant === "rotate180"){
+    ptsR = ptsR.map(p => rotate(p, 180, cx, cy));
+    ptsR = translatePts(ptsR, 340, 0);
+  }
+
+  if(variant === "rotate90"){
+    ptsR = ptsR.map(p => rotate(p, 90, cx, cy));
+    ptsR = translatePts(ptsR, 360, 0);
+  }
+
+  if(variant === "stackTopBottom"){
+    ptsL = [pt(260, 150), pt(350, 40), pt(440, 150)];
+    const ccx = 350, ccy = 95;
+    ptsR = ptsL.map(p => rotate(p, 180, ccx, ccy));
+    ptsR = translatePts(ptsR, 0, 170);
+  }
+
+  const leftSvg = buildTriSvg(ptsL, [A,B,C], { W, H, markEdge:[0,1], markVertex:1, edgeColor:"#007bff", angleColor:"#e91e63" });
+  const rightSvg = buildTriSvg(ptsR, [D,E,F], { W, H, markEdge:[0,1], markVertex:1, edgeColor:"#007bff", angleColor:"#e91e63" });
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      ${leftSvg}
+      ${rightSvg}
+    </svg>
+  `;
+
+  return {
+    img: svgToDataUri(svg),
+    map,
+    left: {A,B,C},
+    right: {D,E,F},
+    variant
+  };
+}
+
+/* ========= 無限出題 ========= */
+function pushRecent(sig){
+  state.recentSig.unshift(sig);
+  if(state.recentSig.length > 24) state.recentSig.pop();
+}
+function seenRecent(sig){ return state.recentSig.includes(sig); }
+
+function makeQuestionLevel1(){
+  const type = choice(["sum","maxAcute","equiAngle","isosBase","angleClass","thirdAngle","picClass","whichRight","whichObtuse","nameByAngles"]);
+  if(type==="sum"){
+    return { sig:"L1_sum", q:"三角形的三個內角相加是多少？",
+      choices:["90°","180°","270°","360°"], a:1, explain:"任何三角形的三個內角相加都是 180°。" };
+  }
+  if(type==="maxAcute"){
+    return { sig:"L1_maxAcute", q:"一個三角形中，最多有幾個銳角？",
+      choices:["1 個","2 個","3 個","4 個"], a:2, explain:"三角形內角和 180°，三個角都小於 90° 也能成立，所以最多 3 個。" };
+  }
+  if(type==="equiAngle"){
+    return { sig:"L1_equiAngle", q:"正三角形的三個角各是多少度？",
+      choices:["30°","45°","60°","90°"], a:2, explain:"正三角形三個角一樣大，180° ÷ 3 = 60°。" };
+  }
+  if(type==="isosBase"){
+    return { sig:"L1_isosBase", q:"等腰三角形的兩個底角會怎樣？",
+      choices:["一定相等","一定互補","一定是直角","一定不同"], a:0, explain:"等腰三角形兩腰相等，所以兩個底角相等。" };
+  }
+  if(type==="thirdAngle"){
+    const base = randInt(30,80);
+    const third = 180 - base - base;
+    const opts = shuffle([third, third+10, third-10, third+20].map(x=>clamp(x,10,160)));
+    return {
+      sig:`L1_third_${base}`,
+      q:`等腰三角形的兩個底角都是 ${base}°，頂角是多少度？`,
+      choices: opts.map(x=>`${x}°`),
+      a: opts.indexOf(third),
+      explain:`內角和 180°，頂角 = 180° - ${base}° - ${base}° = ${third}°。`
+    };
+  }
+  if(type==="angleClass"){
+    const cat = choice(["acute","right","obtuse"]);
+    let angles;
+    if(cat==="acute"){
+      const a = randInt(30,80), b = randInt(30,80), c = 180-a-b;
+      if(!(c>0 && c<90)) return makeQuestionLevel1();
+      angles = shuffle([a,b,c]);
+    }else if(cat==="right"){
+      const b = randInt(20,70), c = 90-b;
+      angles = shuffle([90,b,c]);
+    }else{
+      const a = randInt(100,130), b = randInt(20,50), c = 180-a-b;
+      if(!(c>0 && c<90)) return makeQuestionLevel1();
+      angles = shuffle([a,b,c]);
+    }
+    const ans = cat==="acute" ? "銳角三角形" : cat==="right" ? "直角三角形" : "鈍角三角形";
+    const choices = shuffle(["銳角三角形","直角三角形","鈍角三角形","無法判斷"]);
+    return {
+      sig:`L1_angleClass_${angles.join("_")}`,
+      q:`一個三角形的三個角是 ${angles[0]}°、${angles[1]}°、${angles[2]}°，這是什麼三角形？`,
+      choices, a: choices.indexOf(ans),
+      explain: ans==="銳角三角形" ? "三個角都小於 90° → 銳角三角形。"
+            : ans==="直角三角形" ? "有一個角是 90° → 直角三角形。"
+            : "有一個角大於 90° → 鈍角三角形。"
+    };
+  }
+  if(type==="whichRight"){
+    const options = ["90°、60°、30°","80°、70°、30°","100°、50°、30°","60°、60°、60°"];
+    const ch = shuffle(options);
+    return { sig:"L1_whichRight", q:"下列哪一組角度一定是「直角三角形」？",
+      choices: ch, a: ch.indexOf("90°、60°、30°"), explain:"有一個角是 90° 的三角形就是直角三角形。" };
+  }
+  if(type==="whichObtuse"){
+    const options = ["110°、40°、30°","80°、60°、40°","90°、50°、40°","60°、60°、60°"];
+    const ch = shuffle(options);
+    return { sig:"L1_whichObtuse", q:"下列哪一組角度一定是「鈍角三角形」？",
+      choices: ch, a: ch.indexOf("110°、40°、30°"), explain:"有一個角大於 90° 就是鈍角三角形；110° 就是鈍角。" };
+  }
+  if(type==="nameByAngles"){
+    return { sig:"L1_nameByAngles", q:"如果一個三角形有一個角是 120°，它一定是？",
+      choices:["銳角三角形","直角三角形","鈍角三角形","正三角形"], a:2, explain:"120° 大於 90°，所以是鈍角三角形。" };
+  }
+
+  const picKind = choice(["right","isos","obtuse","equi"]);
+  const img = picKind==="right" ? makeRightTri() : picKind==="isos" ? makeIsosTri() : picKind==="obtuse" ? makeObtuseTri() : makeEquiTri();
+  const qChoices = ["正三角形","等腰三角形","直角三角形","鈍角三角形"];
+  const a = picKind==="equi" ? 0 : picKind==="isos" ? 1 : picKind==="right" ? 2 : 3;
+  return {
+    sig:`L1_pic_${picKind}`,
+    q:"看圖：這個三角形最可能是？",
+    img,
+    choices: qChoices,
+    a,
+    explain: picKind==="right" ? "圖中直角兩邊上色 + 直角記號 → 直角三角形。"
+          : picKind==="isos" ? "圖中兩腰整段上色 → 等腰三角形。"
+          : picKind==="equi" ? "三邊整段上色 → 正三角形。"
+          : "圖中橘色圓弧包住鈍角 → 鈍角三角形。"
+  };
+}
+
+function makeQuestionLevel2(){
+  const type = choice(["rightStep","isosStep","toolRight","toolAngleLen","checkRight","sumCheck","equiCond","isosRight","fixMistake"]);
+  if(type==="rightStep"){
+    return { sig:"L2_rightStep",
+      q:"「先用三角板描出直角後，再用尺連接兩邊。」這樣最可能畫出？",
+      choices:["正三角形","直角三角形","鈍角三角形","等腰三角形"],
+      a:1, explain:"先描出直角就固定有 90°，連接後得到直角三角形。" };
+  }
+  if(type==="isosStep"){
+    return { sig:"L2_isosStep",
+      q:"要畫「等腰三角形」，比較合理的做法是？",
+      choices:[
+        "先畫一條邊，再畫另一條跟它一樣長的邊，最後連接兩邊端點",
+        "先畫三條邊長都不同的邊",
+        "先畫一個直角，再畫三個相等角",
+        "先畫一個圓，再隨便連三條線"
+      ],
+      a:0, explain:"等腰的關鍵是兩邊相等：先把兩條相同長度的邊確定下來最穩。" };
+  }
+  if(type==="toolRight"){
+    return { sig:"L2_toolRight",
+      q:"你想快速檢查「是不是直角」，最方便用？",
+      choices:["量角器","三角板（直角）","橡皮擦","色紙"],
+      a:1, explain:"三角板自帶 90°，對齊就能快速判斷。" };
+  }
+  if(type==="toolAngleLen"){
+    const ang = choice([60,80,100,120]);
+    const len = randInt(3,8);
+    return { sig:`L2_tool_${ang}_${len}`,
+      q:`題目：畫出一個角是 ${ang}°，且有一條邊長 ${len} 公分的三角形。最需要的工具是？`,
+      choices:["量角器與直尺","只要直尺","只要量角器","不用工具"],
+      a:0, explain:"要量角用量角器，要畫指定長度用直尺。" };
+  }
+  if(type==="checkRight"){
+    return { sig:"L2_checkRight",
+      q:"要畫「直角三角形」，最關鍵要先確定？",
+      choices:["一個角是 90°","三邊都相等","兩角是 60°","三角形面積"],
+      a:0, explain:"直角三角形的定義就是有一個 90°。" };
+  }
+  if(type==="sumCheck"){
+    const wrongSum = choice([175,185,170,190]);
+    return { sig:`L2_sum_${wrongSum}`,
+      q:`你畫完三角形後量角，發現三內角和是 ${wrongSum}°，最可能代表？`,
+      choices:["一定正確","量角或作圖有誤差","三角形內角和不是 180°","它不是三角形"],
+      a:1, explain:"理論上三角形內角和是 180°，不等於 180° 通常是量測或作圖誤差。" };
+  }
+  if(type==="equiCond"){
+    return { sig:"L2_equiCond",
+      q:"下列哪個條件最能保證畫出「正三角形」？",
+      choices:["三邊一樣長","只有一個角 60°","有一個直角","兩角相等"],
+      a:0, explain:"正三角形的核心條件是三邊相等（也會得到三角都是 60°）。" };
+  }
+  if(type==="isosRight"){
+    const s = randInt(3,7);
+    return { sig:`L2_isosRight_${s}`,
+      q:`想畫「等腰直角三角形，兩腰 ${s} 公分」，最穩的做法是？`,
+      choices:[
+        `先固定 90°，再在兩邊各量 ${s} 公分，最後連線`,
+        "先畫 60° 再隨便連線",
+        "先畫三邊都一樣長",
+        "畫完再想辦法變成直角"
+      ],
+      a:0, explain:"等腰直角＝一個直角＋兩腰相等；先固定 90° 再量長度最準。" };
+  }
+  return {
+    sig:"L2_fixMistake",
+    q:"你畫完後發現角度偏一點點，最合理的做法是？",
+    choices:["用量角器再對一次並微調","直接說沒差","把三角形整個撕掉","把角度改寫成想要的"],
+    a:0,
+    explain:"用工具檢查再微調，才是最穩的修正方式。"
+  };
+}
+
+function makeQuestionLevel3(){
+  const type = choice(["def","move","must","point","angle","seg","true","swap"]);
+  if(type==="def"){
+    return { sig:"L3_def",
+      q:"兩個圖形透過移動或翻轉後可以完全疊合，稱為？",
+      choices:["相似","全等","平行","垂直"],
+      a:1, explain:"能完全重合（大小、形狀都一樣）→ 全等。" };
+  }
+  if(type==="move"){
+    return { sig:"L3_move",
+      q:"全等圖形可以靠哪些動作疊合？",
+      choices:["放大或縮小","平移、旋轉、翻轉","改顏色","改材質"],
+      a:1, explain:"全等允許平移/旋轉/翻轉；放大縮小會改大小就不是全等。" };
+  }
+  if(type==="must"){
+    return { sig:"L3_must",
+      q:"如果兩個三角形全等，下列何者一定正確？",
+      choices:["對應邊長相等","其中一個一定是正三角形","一定都有直角","面積不一定相等"],
+      a:0, explain:"全等＝對應邊、對應角都相等，所以對應邊長一定相等。" };
+  }
+
+  const pair = makeCongPairVariant();
+  const {A,B,C} = pair.left;
+  const {D,E,F} = pair.right;
+
+  const leftPick = choice([A,B,C]);
+  const rightCorrect = pair.map[leftPick];
+
+  if(type==="point"){
+    const opts = shuffle([`點 ${D}`,`點 ${E}`,`點 ${F}`]);
+    return {
+      sig:`L3_point_${pair.variant}_${leftPick}`,
+      q:`看圖：兩個三角形全等（可旋轉/翻轉）。若點 ${leftPick} 的對應點是？`,
+      img: pair.img,
+      choices: opts,
+      a: opts.indexOf(`點 ${rightCorrect}`),
+      explain:`對應是一對一：${leftPick} ↔ ${rightCorrect}。`
+    };
+  }
+
+  if(type==="angle"){
+    const opts = shuffle([`∠${D}`,`∠${E}`,`∠${F}`]);
+    return {
+      sig:`L3_angle_${pair.variant}_${leftPick}`,
+      q:`看圖：若 ∠${leftPick} 的對應角是？`,
+      img: pair.img,
+      choices: opts,
+      a: opts.indexOf(`∠${rightCorrect}`),
+      explain:`全等的對應角相等：∠${leftPick} ↔ ∠${rightCorrect}。`
+    };
+  }
+
+  if(type==="seg"){
+    const segs = [[A,B],[B,C],[A,C]];
+    const pick = choice(segs);
+    const sLeft = pick.join("");
+    const sRight = pair.map[pick[0]] + pair.map[pick[1]];
+    const cand = shuffle([seg(D+E), seg(E+F), seg(D+F)]);
+    const correctText = seg(sRight);
+    let choices = cand;
+    if(!choices.includes(correctText)) choices[0] = correctText;
+    return {
+      sig:`L3_seg_${pair.variant}_${sLeft}`,
+      q:`看圖：若 ${seg(sLeft)} 的對應邊是？`,
+      img: pair.img,
+      choices,
+      a: choices.indexOf(correctText),
+      explain:`端點要一一對應，所以 ${seg(sLeft)} ↔ ${seg(sRight)}。`
+    };
+  }
+
+  if(type==="true"){
+    const correct = "對應邊一樣長";
+    const opts = shuffle([correct,"顏色一樣才算全等","方向一定要相同才算全等","一定都有直角才算全等"]);
+    return {
+      sig:`L3_true_${pair.variant}`,
+      q:"看圖：兩個三角形全等。下列哪個敘述一定正確？",
+      img: pair.img,
+      choices: opts,
+      a: opts.indexOf(correct),
+      explain:"全等代表大小與形狀相同，所以對應邊長一定相等。"
+    };
+  }
+
+  const givenRight = choice([D,E,F]);
+  const inverseMap = {}; inverseMap[D]=A; inverseMap[E]=B; inverseMap[F]=C;
+  const correctLeft = inverseMap[givenRight];
+  const opts = shuffle([`點 ${A}`,`點 ${B}`,`點 ${C}`]);
+  return {
+    sig:`L3_swap_${pair.variant}_${givenRight}`,
+    q:`看圖：兩個三角形全等。若點 ${givenRight} 的對應點在左邊，是哪一點？`,
+    img: pair.img,
+    choices: opts,
+    a: opts.indexOf(`點 ${correctLeft}`),
+    explain:`對應是一對一：${givenRight} ↔ ${correctLeft}。`
+  };
+}
+
+function nextRandomQuestion(level){
+  for(let t=0;t<40;t++){
+    const q = (level===1) ? makeQuestionLevel1() : (level===2) ? makeQuestionLevel2() : makeQuestionLevel3();
+    if(!seenRecent(q.sig)){
+      pushRecent(q.sig);
+      return q;
+    }
+  }
+  const q = (level===1) ? makeQuestionLevel1() : (level===2) ? makeQuestionLevel2() : makeQuestionLevel3();
+  pushRecent(q.sig);
+  return q;
+}
+
+/* ======== 暫停 ======== */
+function togglePause(on){
+  if(!document.getElementById("game-page").classList.contains("active-page")) return;
+  state.paused = !!on;
+  const overlay = $("#pause-overlay");
+  overlay.style.display = state.paused ? "flex" : "none";
+  overlay.setAttribute("aria-hidden", state.paused ? "false" : "true");
+  if(state.paused){
+    clearTimeout(state.autoNext);
+    state.autoNext = null;
+  }
+  setTimeout(renderMath, 0);
+}
+
+/* ======== 計時 ======== */
+function startTimer(){
+  stopTimer();
+  state.tick = setInterval(() => {
+    if(state.paused) return;
+    state.timer -= 1;
+    $("#timer").innerText = state.timer;
+    if(state.timer <= 0){
+      state.timer = 0;
+      $("#timer").innerText = 0;
+      stopTimer();
+      endLevel("時間到！你把速度燃成了星塵，但理解還在發光。");
+    }
+  }, 1000);
+}
+function stopTimer(){
+  if(state.tick){
+    clearInterval(state.tick);
+    state.tick = null;
+  }
+}
+
+/* ======== 進入關卡 ======== */
+function startLevel(level){
+  state.level = level;
+  state.speed = $("#speed-select").value || "normal";
+  const conf = SPEED[state.speed] || SPEED.normal;
+
+  state.score = 0;
+  state.streak = 0;
+  state.answered = false;
+  state.timer = conf.time;
+  state.paused = false;
+  state.qNo = 1;
+  state.recentSig = [];
+  state.currentQ = null;
+
+  clearTimeout(state.autoNext);
+  state.autoNext = null;
+
+  $("#current-level-name").innerText = LEVEL_NAME[level];
+  $("#score").innerText = state.score;
+  $("#timer").innerText = state.timer;
+  $("#q-progress").innerText = `第 ${state.qNo} 題`;
+  $("#mode-badge").innerText = `模式：${conf.label}`;
+  $("#streak-badge").innerText = `連對：${state.streak}`;
+  $("#feedback").className = "feedback";
+  $("#feedback").style.display = "none";
+  $("#next-btn").style.display = "none";
+  togglePause(false);
+
+  switchPage("game-page");
+  startTimer();
+  renderQuestion();
+}
+
+/* ======== 出題 ======== */
+function renderQuestion(){
+  state.answered = false;
+  $("#next-btn").style.display = "none";
+  $("#feedback").style.display = "none";
+  $("#feedback").className = "feedback";
+
+  let q = nextRandomQuestion(state.level);
+  q = ensureUniqueChoices(q);
+  state.currentQ = q;
+
+  $("#q-progress").innerText = `第 ${state.qNo} 題`;
+
+  const letters = ["A","B","C","D"].slice(0, q.choices.length);
+
+  const figureHtml = q.img
+    ? `<div class="q-figure"><img src="${q.img}" alt="題目圖形"></div>`
+    : "";
+
+  const content = `
+    <div class="q-title">Q${state.qNo}. ${q.q}</div>
+    ${figureHtml}
+    <div class="choices">
+      ${q.choices.map((c,i)=>`
+        <button class="choice-btn" onclick="answer(${i})">
+          <div class="choice-key">${letters[i]}</div>
+          <div>${c}</div>
+        </button>
+      `).join("")}
+    </div>
+  `;
+  $("#game-content").innerHTML = content;
+  setTimeout(renderMath, 0);
+}
+
+/* ======== 作答 ======== */
+function answer(choiceIdx){
+  if(state.answered || state.paused) return;
+  state.answered = true;
+
+  const conf = SPEED[state.speed] || SPEED.normal;
+  const q = state.currentQ;
+
+  const timeLeft = state.timer;
+  const base = 100;
+  const speedBonus = Math.round((timeLeft/ conf.time) * 40 * conf.mult);
+  const streakBonus = Math.min(60, state.streak * 10);
+
+  if(choiceIdx === q.a){
+    state.streak += 1;
+    const gain = Math.round((base + speedBonus + streakBonus) * conf.mult);
+    state.score += gain;
+
+    $("#score").innerText = state.score;
+    $("#streak-badge").innerText = `連對：${state.streak}`;
+
+    showFeedback(true,
+      `✅ 答對！+${gain} 分<br><span style="font-weight:800;opacity:.9;">${q.explain}</span>`
+    );
+  }else{
+    state.streak = 0;
+    $("#streak-badge").innerText = `連對：0`;
+
+    state.score = Math.max(0, state.score - conf.wrongScore);
+    state.timer = clamp(state.timer - conf.wrongPenalty, 0, 999);
+
+    $("#score").innerText = state.score;
+    $("#timer").innerText = state.timer;
+
+    const correctLetter = ["A","B","C","D"][q.a];
+    const correctText = q.choices[q.a];
+
+    showFeedback(false,
+      `❌ 差一點點。正確答案是 <b>${correctLetter}</b>：<b>${correctText}</b><br>
+       <span style="font-weight:800;opacity:.9;">${q.explain}</span><br>
+       <span style="opacity:.9;">扣 ${conf.wrongScore} 分、扣 ${conf.wrongPenalty} 秒（別急，你正在變強。）</span>`
+    );
+  }
+
+  setTimeout(renderMath, 0);
+
+  clearTimeout(state.autoNext);
+  $("#next-btn").style.display = "inline-flex";
+  state.autoNext = setTimeout(() => {
+    if(state.paused) return;
+    nextQuestion(true);
+  }, 1300);
+}
+
+function showFeedback(ok, html){
+  const fb = $("#feedback");
+  fb.style.display = "block";
+  fb.className = ok ? "feedback ok" : "feedback bad";
+  fb.innerHTML = html;
+}
+
+function nextQuestion(fromAuto=false){
+  if(!state.answered || state.paused) return;
+
+  clearTimeout(state.autoNext);
+  state.autoNext = null;
+
+  state.qNo += 1;
+  renderQuestion();
+
+  if(!fromAuto){
+    $("#next-btn").style.display = "none";
+  }
+}
+
+function endLevel(message){
+  stopTimer();
+  clearTimeout(state.autoNext);
+  state.autoNext = null;
+
+  const conf = SPEED[state.speed] || SPEED.normal;
+  const timeBonus = Math.round(state.timer * 2 * conf.mult);
+  state.score += timeBonus;
+
+  upsertLevelScore(state.playerName, state.level, state.score);
+
+  const content = `
+    <div style="text-align:center;">
+      <h2 style="margin:6px 0 4px;">🎉 ${escapeHtml(message)}</h2>
+      <div class="sub">你不是在做題目，你是在把理解，點亮。</div>
+
+      <div class="pill-row" style="margin-top:14px;">
+        <div class="pill"><i class="fa-solid fa-star"></i>本關得分：${state.score}</div>
+        <div class="pill"><i class="fa-solid fa-hourglass-end"></i>時間獎勵：+${timeBonus}</div>
+        <div class="pill"><i class="fa-solid fa-flag-checkered"></i>作答題號：到第 ${state.qNo} 題</div>
+      </div>
+
+      <div style="margin-top:18px;max-width:720px;margin-left:auto;margin-right:auto;opacity:.92;font-weight:800;line-height:1.7;">
+        你每答一題，都在替大腦鋪一條更順的路；下一次，會更快、更準、更帥。
+      </div>
+
+      <div class="controls-row" style="justify-content:center;margin-top:18px;">
+        <button class="btn btn-primary" onclick="backToLobby()"><i class="fa-solid fa-door-open"></i>回到關卡選擇</button>
+        <button class="btn btn-ghost" onclick="restartLevel()"><i class="fa-solid fa-rotate-right"></i>再挑戰一次</button>
+      </div>
+    </div>
+  `;
+
+  $("#game-content").innerHTML = content;
+  $("#feedback").style.display = "none";
+  $("#next-btn").style.display = "none";
+  togglePause(false);
+  setTimeout(renderMath, 0);
+}
+
+function backToLobby(){
+  stopTimer();
+  clearTimeout(state.autoNext);
+  state.autoNext = null;
+  togglePause(false);
+  renderLeaderboard();
+  switchPage("lobby-page");
+}
+function restartLevel(){
+  togglePause(false);
+  startLevel(state.level);
+}
+function restartConfirm(){
+  if(!document.getElementById("game-page").classList.contains("active-page")) return;
+  const ok = confirm("要重來本關嗎？（題目會重新隨機、分數重新計算）");
+  if(ok) restartLevel();
+}
+
+renderLeaderboard();
+setTimeout(renderMath, 0);
+</script>
+
+</body>
+</html>
+
+
+
+
+
